@@ -7,51 +7,33 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 20px;
             background-color: #f4f4f9;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            color: #333;
         }
         h1 {
             color: #333;
         }
-        form {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+        form, ul {
+            margin-top: 20px;
         }
-        input[type="text"], select {
+        input[type="text"], select, button {
             padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
+            margin-right: 10px;
+            border-radius: 5px;
             border: 1px solid #ddd;
-            width: calc(100% - 22px);
         }
         button {
-            padding: 10px 20px;
+            background-color: #5cb85c;
             color: white;
-            background-color: #0056b3;
             border: none;
-            border-radius: 4px;
             cursor: pointer;
         }
         button:hover {
-            background-color: #004494;
-        }
-        ul {
-            list-style: none;
-            padding: 0;
+            background-color: #4cae4c;
         }
         li {
-            background-color: white;
-            padding: 10px;
             margin-bottom: 10px;
-            border-radius: 8px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -72,7 +54,10 @@
     {% if questions %}
         <ul>
         {% for question in questions %}
-            <li>{{ question }} <button onclick="getSolution('{{ question }}')">See Solution</button></li>
+            <li>{{ question }} <button onclick="getSolution('{{ question }}')">See Solution</button>
+                <button onclick="rateDifficulty('{{ question }}', 'hard')">Too Hard</button>
+                <button onclick="rateDifficulty('{{ question }}', 'easy')">Too Easy</button>
+            </li>
         {% endfor %}
         </ul>
     {% endif %}
@@ -87,10 +72,20 @@
                 body: JSON.stringify({question: question})
             })
             .then(response => response.json())
-            .then(data => {
-                const solution = `Solution for "${question}": ${data.solution}`;
-                alert(solution);
+            .then(data => alert(data.solution))
+            .catch(error => console.error('Error:', error));
+        }
+
+        function rateDifficulty(question, difficulty) {
+            fetch('/rate_difficulty', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({question: question, difficulty: difficulty})
             })
+            .then(response => response.json())
+            .then(data => alert(data.message))
             .catch(error => console.error('Error:', error));
         }
     </script>
