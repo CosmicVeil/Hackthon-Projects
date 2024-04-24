@@ -5,42 +5,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Question Generator</title>
     <style>
+
+        #question-selection {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+        #generate-button {
+            padding: 10px 20px;
+            color: white;
+            background-color: #0056b3;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #generate-button:hover {
+            background-color: #004494;
+        }
+
+        #questions-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #questions-list li {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
             background-color: #f4f4f9;
-            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
         h1 {
             color: #333;
         }
-        form, ul {
-            margin-top: 20px;
-        }
-        input[type="text"], select, button {
+
+        input[type="text"], select {
             padding: 10px;
-            margin-right: 10px;
-            border-radius: 5px;
+            margin: 10px 0;
+            border-radius: 4px;
             border: 1px solid #ddd;
+            width: calc(100% - 22px);
         }
-        button {
-            background-color: #5cb85c;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #4cae4c;
+        ul {
+            list-style: none;
+            padding: 0;
         }
         li {
+            background-color: white;
+            padding: 10px;
             margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
+        #solution-button{
+            padding: 10px 20px;
+            color: white;
+            background-color: #0056b3;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #solution-button:hover {
+            background-color: #004494;
+        }
+        #num_questions-label{
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+        }
+        #Topic-label{
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;  
+        }
+        #QnSbox {
+            display: inline-block; /* Make the box adjust its width based on content */
+            min-width: 100px; /* Set a minimum width to prevent the box from collapsing */
+            max-width: 80%; /* Set a maximum width to limit the width of the box */
+            background-color: rgb(255, 255, 255); /* Set the background color of the box */
+            padding: 20px; /* Add padding inside the box */
+            border: 2px solid rgb(0, 0, 0); /* Add a border around the box */
+            border-radius: 10px; /* Add rounded corners to the box */
+            text-align: center; /* Center the text horizontally */
+        }
+        #difficulty-label{
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;  
+        }
+
     </style>
-</head>
-<body>
-    <h1>Question Generator</h1>
-    <form action="/" method="post">
+
+    </head>
+    <body>
+    <h1>Math Question Generator</h1>
+
+    <div id="InputBox" class="InputBox">
+    <form id="question-selection" action="/" method="post">
+        <label id = "Topic-label" for="fname">Enter A topic</label>
         <input type="text" name="topic" placeholder="Enter topic" required>
+        <label id = "num_questions-label" for="fname">Number of Questions</label>
         <select name="num_questions">
             <option value="1">1</option>
             <option value="2">2</option>
@@ -48,19 +123,22 @@
             <option value="4">4</option>
             <option value="5">5</option>
         </select>
-        <button type="submit">Generate Questions</button>
-    </form>
+        <label id = "difficulty-label" for="fname">Difficulty Grade Level</label>
+        <input type="text" name="difficulty" placeholder="Enter Grade Level" required>
+        <button id="generate-button" type="submit">Generate Questions</button>
+    </div>
 
+    
+    <div id = "QnSbox" class = "QnSbox">
+    </form>
     {% if questions %}
         <ul>
         {% for question in questions %}
-            <li>{{ question }} <button onclick="getSolution('{{ question }}')">See Solution</button>
-                <button onclick="rateDifficulty('{{ question }}', 'hard')">Too Hard</button>
-                <button onclick="rateDifficulty('{{ question }}', 'easy')">Too Easy</button>
-            </li>
+            <li>{{ question }} <button id = "solution-button" onclick="getSolution('{{ question }}')">See Solution</button></li>
         {% endfor %}
         </ul>
     {% endif %}
+    </div>
 
     <script>
         function getSolution(question) {
@@ -72,22 +150,13 @@
                 body: JSON.stringify({question: question})
             })
             .then(response => response.json())
-            .then(data => alert(data.solution))
-            .catch(error => console.error('Error:', error));
-        }
-
-        function rateDifficulty(question, difficulty) {
-            fetch('/rate_difficulty', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({question: question, difficulty: difficulty})
+            .then(data => {
+                const solution = `Solution for "${question}": ${data.solution}`;
+                alert(solution);
             })
-            .then(response => response.json())
-            .then(data => alert(data.message))
             .catch(error => console.error('Error:', error));
         }
     </script>
+
 </body>
 </html>
