@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Question Generator</title>
     <style>
-
         #question-selection {
             background-color: #f0f0f0;
             padding: 20px;
@@ -32,10 +31,14 @@
             padding: 0;
         }
 
+        #questions-list li button {
+            margin-left: 10px;
+        }
+
         #questions-list li {
             background-color: #f0f0f0;
             padding: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 40px; 
             border-radius: 8px;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
             display: flex;
@@ -62,7 +65,7 @@
             margin: 8px 0;
             border-radius: 4px;
             border: 1px solid #ddd;
-            width: calc(50% - 22px); /* Adjusted width to 50% */
+            width: calc(50% - 22px); 
         }
 
         #solution-button {
@@ -127,7 +130,7 @@
 
 <div id="QnSbox" class="QnSbox">
     {% if questions %}
-        <ul>
+        <ul id="questions-list"> <!-- Added ID to the UL -->
             {% for question in questions %}
                 <li>{{ question }} <button id="solution-button" onclick="getSolution('{{ question }}')">See Solution</button></li>
             {% endfor %}
