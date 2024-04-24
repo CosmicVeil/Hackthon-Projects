@@ -3,27 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Question Generator</title>
+    <title>Math Question Generator</title>
     <style>
 
         #question-selection {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        margin-bottom: 20px;
-    }
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
         #generate-button {
             padding: 10px 20px;
             color: white;
-            background-color: #0056b3;
+            background-color: #007bff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
 
         #generate-button:hover {
-            background-color: #004494;
+            background-color: #0056b3;
         }
 
         #questions-list {
@@ -32,16 +33,19 @@
         }
 
         #questions-list li {
-            background-color: white;
-            padding: 10px;
-            margin-bottom: 10px;
+            background-color: #f0f0f0;
+            padding: 20px;
+            margin-bottom: 20px;
             border-radius: 8px;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            background-color: #ffffff;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -50,113 +54,104 @@
         }
 
         h1 {
-            color: #333;
+            color: #007bff;
         }
 
         input[type="text"], select {
-            padding: 10px;
-            margin: 10px 0;
+            padding: 8px;
+            margin: 8px 0;
             border-radius: 4px;
             border: 1px solid #ddd;
-            width: calc(100% - 22px);
+            width: calc(50% - 22px); /* Adjusted width to 50% */
         }
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-        li {
-            background-color: white;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-        }
-        #solution-button{
+
+        #solution-button {
             padding: 10px 20px;
             color: white;
-            background-color: #0056b3;
+            background-color: #007bff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
+
         #solution-button:hover {
-            background-color: #004494;
+            background-color: #0056b3;
         }
-        #num_questions-label{
+
+        #num_questions-label, #Topic-label, #difficulty-label {
             font-family: 'Courier New', Courier, monospace;
             font-size: 13px;
+            color: #333;
         }
-        #Topic-label{
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 13px;  
-        }
+
         #QnSbox {
-            display: inline-block; /* Make the box adjust its width based on content */
-            min-width: 100px; /* Set a minimum width to prevent the box from collapsing */
-            max-width: 80%; /* Set a maximum width to limit the width of the box */
-            background-color: rgb(255, 255, 255); /* Set the background color of the box */
-            padding: 20px; /* Add padding inside the box */
-            border: 2px solid rgb(0, 0, 0); /* Add a border around the box */
-            border-radius: 10px; /* Add rounded corners to the box */
-            text-align: center; /* Center the text horizontally */
-        }
-        #difficulty-label{
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 13px;  
+            display: inline-block;
+            min-width: 100px;
+            max-width: 80%;
+            background-color: rgb(255, 255, 255);
+            padding: 20px;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            text-align: center;
         }
 
     </style>
 
-    </head>
-    <body>
-    <h1>Math Question Generator</h1>
+</head>
+<body>
+<h1>Math Question Generator</h1>
 
-    <div id="InputBox" class="InputBox">
+<div id="InputBox" class="InputBox">
     <form id="question-selection" action="/" method="post">
-        <label id = "Topic-label" for="fname">Enter A topic</label>
-        <input type="text" name="topic" placeholder="Enter topic" required>
-        <label id = "num_questions-label" for="fname">Number of Questions</label>
-        <select name="num_questions">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="20">20</option>
-            <option value="25">25</option>
-        </select>
-        <label id = "difficulty-label" for="fname">Difficulty Grade Level</label>
-        <input type="text" name="difficulty" placeholder="Enter Grade Level" required>
+        <div>
+            <label id="Topic-label" for="fname">Enter a Topic:</label>
+            <input type="text" name="topic" placeholder="Enter topic" required>
+        </div>
+        <div>
+            <label id="num_questions-label" for="fname">Number of Questions:</label>
+            <select name="num_questions">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <div>
+            <label id="difficulty-label" for="fname">Difficulty Grade Level:</label>
+            <input type="text" name="difficulty" placeholder="Enter Grade Level" required>
+        </div>
         <button id="generate-button" type="submit">Generate Questions</button>
-    </div>
-
-    
-    <div id = "QnSbox" class = "QnSbox">
     </form>
+</div>
+
+<div id="QnSbox" class="QnSbox">
     {% if questions %}
         <ul>
-        {% for question in questions %}
-            <li>{{ question }} <button id = "solution-button" onclick="getSolution('{{ question }}')">See Solution</button></li>
-        {% endfor %}
+            {% for question in questions %}
+                <li>{{ question }} <button id="solution-button" onclick="getSolution('{{ question }}')">See Solution</button></li>
+            {% endfor %}
         </ul>
     {% endif %}
-    </div>
+</div>
 
-    <script>
-        function getSolution(question) {
-            fetch('/solve', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({question: question})
-            })
-            .then(response => response.json())
-            .then(data => {
-                const solution = `Solution for "${question}": ${data.solution}`;
-                alert(solution);
-            })
-            .catch(error => console.error('Error:', error));
-        }
-    </script>
+<script>
+    function getSolution(question) {
+        fetch('/solve', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({question: question})
+        })
+        .then(response => response.json())
+        .then(data => {
+            const solution = `Solution for "${question}": ${data.solution}`;
+            alert(solution);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
 
 </body>
 </html>
