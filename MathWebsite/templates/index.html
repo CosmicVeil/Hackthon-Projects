@@ -46,6 +46,19 @@
             align-items: center;
         }
 
+        .solution-button {
+            padding: 10px 20px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .solution-button:hover {
+            background-color: #0056b3;
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #ffffff;
@@ -54,6 +67,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative; /* Added position relative */
         }
 
         h1 {
@@ -68,38 +82,29 @@
             width: calc(50% - 22px); 
         }
 
-        #solution-button {
-            padding: 10px 20px;
-            color: white;
-            background-color: #007bff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        #solution-button:hover {
-            background-color: #0056b3;
-        }
-
-        #num_questions-label, #Topic-label, #difficulty-label {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 13px;
-            color: #333;
-        }
-
-        #QnSbox {
-            display: inline-block;
-            min-width: 100px;
-            max-width: 80%;
-            background-color: rgb(255, 255, 255);
+        .solution-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 300px; /* Adjust the width as needed */
+            margin-top: 20px;
             padding: 20px;
-            border: 2px solid #007bff;
-            border-radius: 10px;
-            text-align: center;
+            border-radius: 8px;
+            border: 1px solid #007bff;
+            background-color: #f0f0f0;
+            text-align: left;
         }
 
+        #solution-textbox {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            resize: none;
+            overflow: auto;
+            text-align: left;
+        }
     </style>
-
 </head>
 <body>
 <h1>Math Question Generator</h1>
@@ -128,32 +133,49 @@
     </form>
 </div>
 
+<div class="solution-container">
+    <label for="solution-textbox">Solution:</label>
+    <textarea id="solution-textbox" readonly></textarea>
+</div>
+
 <div id="QnSbox" class="QnSbox">
     {% if questions %}
         <ul id="questions-list"> <!-- Added ID to the UL -->
             {% for question in questions %}
-                <li>{{ question }} <button id="solution-button" onclick="getSolution('{{ question }}')">See Solution</button></li>
+                <li>{{ question }} <button class="solution-button" data-question="{{ question }}">See Solution</button></li>
             {% endfor %}
         </ul>
     {% endif %}
 </div>
 
 <script>
-    function getSolution(question) {
-        fetch('/solve', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({question: question})
-        })
-        .then(response => response.json())
-        .then(data => {
-            const solution = `Solution for "${question}": ${data.solution}`;
-            alert(solution);
-        })
-        .catch(error => console.error('Error:', error));
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const solutionButtons = document.querySelectorAll('.solution-button');
+        const solutionTextbox = document.getElementById('solution-textbox');
+
+        solutionButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const question = this.getAttribute('data-question');
+                getSolution(question);
+            });
+        });
+
+        function getSolution(question) {
+            fetch('/solve', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({question: question})
+            })
+            .then(response => response.json())
+            .then(data => {
+                const solution = `Solution for "${question}": ${data.solution}`;
+                solutionTextbox.value = solution; // Set solution to the textbox
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
 </script>
 
 </body>
