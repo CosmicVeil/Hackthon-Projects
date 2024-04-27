@@ -4,12 +4,12 @@ from flask import Flask, render_template, request, jsonify
 import openai
 import random
 
-solution_dict = {
-    "Solve x^2+5x+6=0": "x=-2,-3",
-    "Solve x^2+6x+5=0": "x=-1,-5",
-    "Solve 2x^2-12x+16=0": "x=4,2",
-    "Solve 3x^2+16x+20=0": "x=-2/3,-10",
-    "Solve 5x^2-23x+12=0": "x=12/5,1",
+old_solution_dict = {
+    "x^2 + 5x + 6 = 0": "x=-2,-3",
+    "x^2 + 6x + 5 = 0": "x=-1,-5",
+    "2x^2 - 12x + 16 = 0": "x=4,2",
+    "3x^2 + 16x + 20 = 0": "x=-2/3,-10",
+    "5x^2 - 23x + 12 = 0": "x=12/5,1",
     "x^2 + 6x + 5 = 0": "x=-1,-5",
     "x^2 - 3x - 4 = 0": "x=4,-1",
     "2x^2 + 8x + 6 = 0": "x=-1,-3",
@@ -59,10 +59,39 @@ solution_dict = {
     "3x^2 + 6x - 9 = 0": "x=1,-3",
     "x^2 - 15x + 54 = 0": "x=9,6",
     "4x^2 - 12x - 16 = 0": "x=4,-1",
-    "5x^2 + 25x + 30 = 0": "x=-3,-2"
+    "5x^2 + 25x + 30 = 0": "x=-3,-2",
+    "Solve the system:\nx + y = 2\nx - y = 0": "x=1, y=1",
+    "Solve the system:\n2x + 3y = 5\n4x - y = 3": "x=2, y=-1",
+    "Solve the system:\nx - 2y = 1\n3x + 4y = 7": "x=3, y=1",
+    "Solve the system:\n5x + 2y = 4\nx + y = 1": "x=0, y=1",
+    "Solve the system:\nx + 3y = 6\n2x - y = 1": "x=2, y=2",
+    "Solve the system:\n3x - y = 2\nx + 4y = 8": "x=3, y=1",
+    "Solve the system:\n2x + y = 20\n3x - 2y = 5": "x=10, y=0",
+    "Solve the system:\nx + 2y = 4\n2x - 3y = 6": "x=6, y=-1",
+    "Solve the system:\n4x + y = 7\nx - 2y = 1": "x=2, y=3",
+    "Solve the system:\n3x + 3y = 9\nx - y = 1": "x=3, y=2",
+    "Solve the system:\n2x - 2y = 2\n5x + y = 11": "x=2, y=1",
+    "Solve the system:\nx - y = 0\nx + y = 10": "x=5, y=5",
+    "Solve the system:\n6x - 3y = 12\n4x + 8y = 16": "x=4, y=2",
+    "Solve the system:\nx + 5y = 10\n2x - y = 0": "x=2.5, y=1.5",
+    "Solve the system:\n3x + 2y = 6\nx - 4y = 10": "x=4, y=-1",
+    "Solve the system:\n4x + 4y = 8\n2x - 2y = 2": "x=2, y=1",
+    "Solve the system:\n5x - 5y = 10\nx + y = 2": "x=3, y=-1",
+    "Solve the system:\nx + y = 3\n2x + 2y = 6": "x=1.5, y=1.5",
+    "Solve the system:\n2x + 2y = 8\n3x - y = 3": "x=3, y=1",
+    "Solve the system:\n4x - y = 1\nx + 3y = 9": "x=3, y=2",
+    "Solve the system:\n3x - 3y = 6\nx + 2y = 4": "x=3, y=0.5",
+    "Solve the system:\nx - 2y = 0\n2x + 4y = 8": "x=4, y=2",
+    "Solve the system:\n4x + 2y = 12\nx - y = 1": "x=3, y=2",
+    "Solve the system:\n3x + y = 5\n5x - 2y = 10": "x=2, y=1",
+    "Solve the system:\nx + 4y = 8\n2x + 3y = 10": "x=4, y=1"
 }
+solution_dict = {}
 
-quadratics = ["Solve x^2+5x+6=0", "Solve x^2+6x+5=0", "Solve 2x^2-12x+16=0", "Solve 3x^2+16x+20=0", "Solve 5x^2-23x+12=0", "x^2 + 6x + 5 = 0",
+for val in old_solution_dict:
+    new_val = val.replace("\n",", ")
+    solution_dict[new_val] = old_solution_dict[val]
+quadratics = ["x^2 + 5x + 6 = 0", "x^2 + 6x + 5 = 0", "2x^2 - 12x + 16 = 0", "3x^2 + 16x + 20 = 0", "5x^2 - 23x + 12 = 0", "x^2 + 6x + 5 = 0",
     "x^2 - 3x - 4 = 0",
     "2x^2 + 8x + 6 = 0",
     "x^2 - 5x + 6 = 0",
@@ -111,12 +140,37 @@ quadratics = ["Solve x^2+5x+6=0", "Solve x^2+6x+5=0", "Solve 2x^2-12x+16=0", "So
     "3x^2 + 6x - 9 = 0",
     "x^2 - 15x + 54 = 0",
     "4x^2 - 12x - 16 = 0",
-    "5x^2 + 25x + 30 = 0"
+    "5x^2 + 25x + 30 = 0",
 ]
-quadraticsAns = ["x=-3,-2", "x=-5,-1", "x=2,4", "x=-2,-10/3", "x=4,3/5"]
 basicOperations = ["1+1","2+2","3+3","4+4","5+5"]
-basicOperationsAns = ["2","4","6","8","10"]
-linear_systems = []
+linear_systems = [
+    "Solve the system:\nx + y = 2\nx - y = 0",
+    "Solve the system:\n2x + 3y = 5\n4x - y = 3",
+    "Solve the system:\nx - 2y = 1\n3x + 4y = 7",
+    "Solve the system:\n5x + 2y = 4\nx + y = 1",
+    "Solve the system:\nx + 3y = 6\n2x - y = 1",
+    "Solve the system:\n3x - y = 2\nx + 4y = 8",
+    "Solve the system:\n2x + y = 20\n3x - 2y = 5",
+    "Solve the system:\nx + 2y = 4\n2x - 3y = 6",
+    "Solve the system:\n4x + y = 7\nx - 2y = 1",
+    "Solve the system:\n3x + 3y = 9\nx - y = 1",
+    "Solve the system:\n2x - 2y = 2\n5x + y = 11",
+    "Solve the system:\nx - y = 0\nx + y = 10",
+    "Solve the system:\n6x - 3y = 12\n4x + 8y = 16",
+    "Solve the system:\nx + 5y = 10\n2x - y = 0",
+    "Solve the system:\n3x + 2y = 6\nx - 4y = 10",
+    "Solve the system:\n4x + 4y = 8\n2x - 2y = 2",
+    "Solve the system:\n5x - 5y = 10\nx + y = 2",
+    "Solve the system:\nx + y = 3\n2x + 2y = 6",
+    "Solve the system:\n2x + 2y = 8\n3x - y = 3",
+    "Solve the system:\n4x - y = 1\nx + 3y = 9",
+    "Solve the system:\n3x - 3y = 6\nx + 2y = 4",
+    "Solve the system:\nx - 2y = 0\n2x + 4y = 8",
+    "Solve the system:\n4x + 2y = 12\nx - y = 1",
+    "Solve the system:\n3x + y = 5\n5x - 2y = 10",
+    "Solve the system:\nx + 4y = 8\n2x + 3y = 10"
+]
+
 
 app = Flask(__name__)# Initialize a Flask application.
 
@@ -166,8 +220,15 @@ def generate_questions(topic,num_questions,difficulty):
         return basicOperations
     elif topic.lower() == "quadratics":
         questions = []
-        for i in range(num_questions):
+        for _ in range(num_questions):
             questions.append(random.choice(quadratics))
+    elif topic.lower() == "linear systems":
+        questions = []
+        for _ in range(num_questions):
+            option = random.choice(linear_systems)
+            option = option.replace('\n', ", ")
+            questions.append(option)
+            
     return questions
 
 # Define a route for solving questions. It accepts POST requests.
