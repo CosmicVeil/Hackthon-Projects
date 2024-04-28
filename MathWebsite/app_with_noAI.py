@@ -272,22 +272,37 @@ def index():    # If a POST request is received (i.e., when the user submits the
 #     print("Dhurv has a unibrow")
 
 def generate_questions(topic,num_questions,difficulty):
+
+    # Based on the topic, return a list of questions in that topic
+
+    # All the lists with C's in front of them are copies of the OG lists, where we remove vals already chosen
+    # This keeps all questions given to the user unique
     if topic.lower() == "basic math":
         return basicOperations
     elif topic.lower() == "quadratics":
         questions = []
+
+        c_quadratics = quadratics[:]
         for _ in range(num_questions):
-            questions.append(random.choice(quadratics))
+            option = random.choice(c_quadratics)
+            questions.append(option)
+            c_quadratics.remove(option)
+
     elif topic.lower() == "linear systems":
         questions = []
+        c_linear = linear_systems[:]
         for _ in range(num_questions):
-            option = random.choice(linear_systems)
+            option = random.choice(c_linear)
+            c_linear.remove(option)
             option = option.replace('\n', ", ")
             questions.append(option)
     elif topic.lower() == "derivatives":
         questions = []
+        c_deriv = derivatives[:]
         for _ in range(num_questions):
-            questions.append(random.choice(derivatives))
+            option = random.choice(c_deriv)
+            questions.append(option)
+            c_deriv.remove(option)
             
     return questions
 
