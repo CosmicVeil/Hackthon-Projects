@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Question Generator</title>
     <style>
+        /* CSS styles */
         #question-selection {
             background-color: #f0f0f0;
             padding: 20px;
@@ -44,6 +45,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative; /* Added */
         }
 
         .solution-button {
@@ -67,7 +69,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative; /* Added position relative */
         }
 
         h1 {
@@ -83,11 +84,11 @@
         }
 
         .solution-container {
+            display: none; /* Hide the solution box by default */
             position: absolute;
-            left: 0;
+            left: -380px; /* Adjust the distance from the left */
             top: 0;
             width: 300px; /* Adjust the width as needed */
-            margin-top: 20px;
             padding: 20px;
             border-radius: 8px;
             border: 1px solid #007bff;
@@ -95,14 +96,21 @@
             text-align: left;
         }
 
-        #solution-textbox {
-            width: 100%;
+        .solution-textbox {
+            width: calc(100% - 42px); /* Adjusted width */
             padding: 10px;
             border-radius: 4px;
             border: 1px solid #ddd;
             resize: none;
-            overflow: auto;
+            overflow: hidden;
             text-align: left;
+            height: auto; /* Auto-expand to fit content */
+        }
+
+        #QnSbox {
+            width: 50%; /* Adjust width as needed */
+            margin-left: auto; /* Align to the left side */
+            margin-right: auto;
         }
     </style>
 </head>
@@ -137,16 +145,16 @@
     </form>
 </div>
 
-<div class="solution-container">
-    <label for="solution-textbox">Solution:</label>
-    <textarea id="solution-textbox" readonly></textarea>
-</div>
-
 <div id="QnSbox" class="QnSbox">
     {% if questions %}
         <ul id="questions-list"> <!-- Added ID to the UL -->
             {% for question in questions %}
-                <li>{{ question }} <button class="solution-button" data-question="{{ question }}">See Solution</button></li>
+                <li>{{ question }} <button class="solution-button" data-question="{{ question }}">See Solution</button>
+                    <div class="solution-container">
+                        <label for="solution-textbox">Solution:</label>
+                        <textarea class="solution-textbox" readonly></textarea>
+                    </div>
+                </li>
             {% endfor %}
         </ul>
     {% endif %}
@@ -155,16 +163,29 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const solutionButtons = document.querySelectorAll('.solution-button');
-        const solutionTextbox = document.getElementById('solution-textbox');
 
         solutionButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const question = this.getAttribute('data-question');
-                getSolution(question);
+                const solutionContainer = this.parentNode.querySelector('.solution-container');
+
+                // Hide all other solution containers
+                document.querySelectorAll('.solution-container').forEach(container => {
+                    if (container !== solutionContainer) {
+                        container.style.display = 'none';
+                    }
+                });
+
+                // Toggle display of the clicked solution container
+                if (solutionContainer.style.display === 'block') {
+                    solutionContainer.style.display = 'none';
+                } else {
+                    getSolution(question, solutionContainer);
+                }
             });
         });
 
-        function getSolution(question) {
+        function getSolution(question, solutionContainer) {
             fetch('/solve', {
                 method: 'POST',
                 headers: {
@@ -175,7 +196,8 @@
             .then(response => response.json())
             .then(data => {
                 const solution = `Solution for "${question}": ${data.solution}`;
-                solutionTextbox.value = solution; // Set solution to the textbox
+                solutionContainer.querySelector('.solution-textbox').value = solution; // Set solution to the textbox
+                solutionContainer.style.display = 'block'; // Display the solution box
             })
             .catch(error => console.error('Error:', error));
         }
