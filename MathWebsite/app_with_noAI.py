@@ -4,6 +4,8 @@ from flask import Flask, render_template, request, jsonify
 import openai
 import random
 
+
+# Old dictionary with solutions which we convert to be more readable
 old_solution_dict = {
     "x^2 + 5x + 6 = 0": "x=-2,-3",
     "x^2 + 6x + 5 = 0": "x=-1,-5",
@@ -84,13 +86,41 @@ old_solution_dict = {
     "Solve the system: x - 2y = 0\n2x + 4y = 8": "x=4, y=2",
     "Solve the system: 4x + 2y = 12\nx - y = 1": "x=3, y=2",
     "Solve the system: 3x + y = 5\n5x - 2y = 10": "x=2, y=1",
-    "Solve the system: x + 4y = 8\n2x + 3y = 10": "x=4, y=1"
+    "Solve the system: x + 4y = 8\n2x + 3y = 10": "x=4, y=1",
+    "Find the derivative: f(x) = x^2": "f'(x) = 2x",
+    "Find the derivative: f(x) = 3x^3": "f'(x) = 9x^2",
+    "Find the derivative: f(x) = 4x": "f'(x) = 4",
+    "Find the derivative: f(x) = 5x^5": "f'(x) = 25x^4",
+    "Find the derivative: f(x) = 6x^2 + 3x": "f'(x) = 12x + 3",
+    "Find the derivative: f(x) = 7x^4 - x^2": "f'(x) = 28x^3 - 2x",
+    "Find the derivative: f(x) = 8x^3 + 2x^2": "f'(x) = 24x^2 + 4x",
+    "Find the derivative: f(x) = sin(x)": "f'(x) = cos(x)",
+    "Find the derivative: f(x) = cos(x)": "f'(x) = -sin(x)",
+    "Find the derivative: f(x) = e^x": "f'(x) = e^x",
+    "Find the derivative: f(x) = ln(x)": "f'(x) = 1/x",
+    "Find the derivative: f(x) = tan(x)": "f'(x) = sec^2(x)",
+    "Find the derivative: f(x) = sec(x)": "f'(x) = sec(x)tan(x)",
+    "Find the derivative: f(x) = csc(x)": "f'(x) = -csc(x)cot(x)",
+    "Find the derivative: f(x) = cot(x)": "f'(x) = -csc^2(x)",
+    "Find the derivative: f(x) = sqrt(x)": "f'(x) = 1/(2sqrt(x))",
+    "Find the derivative: f(x) = 1/x": "f'(x) = -1/x^2",
+    "Find the derivative: f(x) = x^(-2)": "f'(x) = -2x^(-3)",
+    "Find the derivative: f(x) = 3x^2 + 5x - 2": "f'(x) = 6x + 5",
+    "Find the derivative: f(x) = 4x^3 - 3x + 6": "f'(x) = 12x^2 - 3",
+    "Find the derivative: f(x) = 5x^4 + 10x^3 - x": "f'(x) = 20x^3 + 30x^2 - 1",
+    "Find the derivative: f(x) = 6x^5 - 4x^3 + 2x - 1": "f'(x) = 30x^4 - 12x^2 + 2",
+    "Find the derivative: f(x) = e^(2x)": "f'(x) = 2e^(2x)",
+    "Find the derivative: f(x) = x^2 * ln(x)": "f'(x) = 2x*ln(x) + x",
+    "Find the derivative: f(x) = (x^3 + 1) / (x^2 - 1)": "f'(x) = ((3x^2)(x^2 - 1) - (x^3 + 1)(2x)) / (x^2 - 1)^2"
 }
 solution_dict = {}
 
+# Converting to make it more readable
 for val in old_solution_dict:
     new_val = val.replace("\n",", ")
     solution_dict[new_val] = old_solution_dict[val]
+
+# Lists of different topics and the questions
 quadratics = ["x^2 + 5x + 6 = 0", "x^2 + 6x + 5 = 0", "2x^2 - 12x + 16 = 0", "3x^2 + 16x + 20 = 0", "5x^2 - 23x + 12 = 0", "x^2 + 6x + 5 = 0",
     "x^2 - 3x - 4 = 0",
     "2x^2 + 8x + 6 = 0",
@@ -170,7 +200,33 @@ linear_systems = [
     "Solve the system: 3x + y = 5\n5x - 2y = 10",
     "Solve the system: x + 4y = 8\n2x + 3y = 10"
 ]
-
+derivatives = [
+    "Find the derivative: f(x) = x^2",
+    "Find the derivative: f(x) = 3x^3",
+    "Find the derivative: f(x) = 4x",
+    "Find the derivative: f(x) = 5x^5",
+    "Find the derivative: f(x) = 6x^2 + 3x",
+    "Find the derivative: f(x) = 7x^4 - x^2",
+    "Find the derivative: f(x) = 8x^3 + 2x^2",
+    "Find the derivative: f(x) = sin(x)",
+    "Find the derivative: f(x) = cos(x)",
+    "Find the derivative: f(x) = e^x",
+    "Find the derivative: f(x) = ln(x)",
+    "Find the derivative: f(x) = tan(x)",
+    "Find the derivative: f(x) = sec(x)",
+    "Find the derivative: f(x) = csc(x)",
+    "Find the derivative: f(x) = cot(x)",
+    "Find the derivative: f(x) = sqrt(x)",
+    "Find the derivative: f(x) = 1/x",
+    "Find the derivative: f(x) = x^(-2)",
+    "Find the derivative: f(x) = 3x^2 + 5x - 2",
+    "Find the derivative: f(x) = 4x^3 - 3x + 6",
+    "Find the derivative: f(x) = 5x^4 + 10x^3 - x",
+    "Find the derivative: f(x) = 6x^5 - 4x^3 + 2x - 1",
+    "Find the derivative: f(x) = e^(2x)",
+    "Find the derivative: f(x) = x^2 * ln(x)",
+    "Find the derivative: f(x) = (x^3 + 1) / (x^2 - 1)"
+]
 
 app = Flask(__name__)# Initialize a Flask application.
 
@@ -228,6 +284,10 @@ def generate_questions(topic,num_questions,difficulty):
             option = random.choice(linear_systems)
             option = option.replace('\n', ", ")
             questions.append(option)
+    elif topic.lower() == "derivatives":
+        questions = []
+        for _ in range(num_questions):
+            questions.append(random.choice(derivatives))
             
     return questions
 
