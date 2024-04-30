@@ -9,4 +9,3 @@ Our website works in a couple of steps:
 
 Our website uses the OPEN AI API to get the questions and solve them. We use Python's Flask module to create the backend, and a combination of HTML and CSS to create the frontend.
 
-- unibrow nation
