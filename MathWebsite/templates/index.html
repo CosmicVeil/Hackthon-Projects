@@ -102,15 +102,27 @@
             border-radius: 4px;
             border: 1px solid #ddd;
             resize: none;
-            overflow: hidden;
+            overflow: auto; /* Use auto for scroll bars when needed */
             text-align: left;
-            height: auto; /* Auto-expand to fit content */
+            height: 60px; /* Set a fixed height or remove for auto-expansion */
         }
 
         #QnSbox {
             width: 50%; /* Adjust width as needed */
             margin-left: auto; /* Align to the left side */
             margin-right: auto;
+        }
+
+        /* Added CSS for horizontal alignment */
+        #question-selection div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        #question-selection div label {
+            width: 200px; /* Fixed width for labels */
+            margin-right: 20px; /* Adjust as needed */
         }
     </style>
 </head>
@@ -217,4 +229,5 @@
     });
 </script>
 
-</body></html>
+</body>
+</html>
