@@ -242,11 +242,10 @@ def index():    # If a POST request is received (i.e., when the user submits the
 
         topic = request.form['topic']
 
-        num_questions = int(request.form['num_questions'])  # these 3 lines extract the information from the html link <form></form>
+        num_questions = int(request.form['num_questions'])  # these 3 lines extract the information from the html link <form></form>  (REMEMBER THE REQUEST FORM IS FROM THE ID ONLY)
 
-        difficulty = request.form['difficulty']
+        difficulty = int(request.form['difficulty_level'])
 
-    
         questions = generate_questions(topic, num_questions, difficulty)# Generate questions using the generate_questions function.
 
 
@@ -324,6 +323,7 @@ def generate_questions(topic,num_questions,difficulty):
 #     except Exception as e:
 
 #         return jsonify({'error': str(e)})# If an error occurs, return the error message.
+
 @app.route('/solve', methods=['POST'])
 def solve():
     data = request.json
