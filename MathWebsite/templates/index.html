@@ -132,7 +132,7 @@
 <div id="InputBox" class="InputBox">
     <form id="question-selection" action="/" method="post">
         <div>
-            <label id="Topic-label" for="topic">Select a Topic:</label>
+            <label id="Topic-label" >Select a Topic:</label>
             <select name="topic" id="topic" required>
                 <option value="derivatives">Derivatives</option>
                 <option value="quadratics">Quadratics</option>
@@ -140,7 +140,7 @@
             </select>
         </div>
         <div>
-            <label id="num_questions-label" for="num_questions">Number of Questions:</label>
+            <label id="num_questions-label">Number of Questions:</label>
             <select name="num_questions" id="num_questions" required>
                 <option value="5">5</option>
                 <option value="10">10</option>
@@ -150,21 +150,22 @@
             </select>
         </div>
         <div>
-            <label id="difficulty-label" for="fname">Difficulty Grade Level:</label>
-            <select name="num_questions" id="num_questions" required>
-                <option value="5">1</option>
-                <option value="10">2</option>
-                <option value="15">3</option>
-                <option value="20">4</option>
-                <option value="25">5</option>
-                <option value="5">6</option>
-                <option value="10">7</option>
-                <option value="15">8</option>
-                <option value="20">9</option>
-                <option value="25">10</option>
-                <option value="25">11</option>
-                <option value="25">12</option>
+            <label id="difficulty-label" >Difficulty Grade Level:</label>
+            <select name="difficulty_level" id="difficulty_label" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
             </select>
+
         </div>
         <button id="generate-button" type="submit">Generate Questions</button>
     </form>
