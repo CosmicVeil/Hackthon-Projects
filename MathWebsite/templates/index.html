@@ -6,6 +6,26 @@
     <title>Math Question Generator</title>
     <style>
         /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm0zNzNiYXRjaDEzLTA4Mi1rcHhrOW5nay5qcGc.jpg'); /* Replace this with the URL of your image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white; /* Add this line to change font color to white */
+        }
+
+        h1 {
+            color: white; /* Add this line to change the color of the h1 element */
+        }
+
         #question-selection {
             background-color: #f0f0f0;
             padding: 20px;
@@ -34,6 +54,7 @@
 
         #questions-list li button {
             margin-left: 10px;
+            color: black; /* Change text color to black */
         }
 
         #questions-list li {
@@ -46,6 +67,7 @@
             justify-content: space-between;
             align-items: center;
             position: relative; /* Added */
+            color: black; /* Change text color to black */
         }
 
         .solution-button {
@@ -61,26 +83,13 @@
             background-color: #0056b3;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        h1 {
-            color: #007bff;
-        }
-
         input[type="text"], select {
             padding: 8px;
             margin: 8px 0;
             border-radius: 4px;
             border: 1px solid #ddd;
             width: calc(50% - 22px); 
+            color: black; /* Change text color to black */
         }
 
         .solution-container {
@@ -94,6 +103,7 @@
             border: 1px solid #007bff;
             background-color: #f0f0f0;
             text-align: left;
+            color: black; /* Change text color to black */
         }
 
         .solution-textbox {
@@ -105,6 +115,7 @@
             overflow: auto; /* Use auto for scroll bars when needed */
             text-align: left;
             height: 60px; /* Set a fixed height or remove for auto-expansion */
+            color: black; /* Change text color to black */
         }
 
         #QnSbox {
@@ -123,6 +134,7 @@
         #question-selection div label {
             width: 200px; /* Fixed width for labels */
             margin-right: 20px; /* Adjust as needed */
+            color: black; /* Change text color to black */
         }
     </style>
 </head>
@@ -175,10 +187,10 @@
     {% if questions %}
         <ul id="questions-list"> <!-- Added ID to the UL -->
             {% for question in questions %}
-                <li>{{ question }} <button class="solution-button" data-question="{{ question }}">See Solution</button>
+                <li style="color: black;">{{ question }} <button class="solution-button" data-question="{{ question }}">See Solution</button>
                     <div class="solution-container">
                         <label for="solution-textbox">Solution:</label>
-                        <textarea class="solution-textbox" readonly></textarea>
+                        <textarea class="solution-textbox" readonly style="color: black;"></textarea>
                     </div>
                 </li>
             {% endfor %}
