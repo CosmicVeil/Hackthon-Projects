@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        .NAVIGATION_BAR {
+            width : 100%;
+            min-height: 100%;
+            max-width:  215px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            position: absolute;
+            z-index :1;
+            transition: 0.3s ease-in-out;
+            left: 0; 
+            top: 0;
+            
+        }
+
+        #PhysicsP,#MathP,#BiologyP,#ChemistryP,#HomeP{
+            font-size: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .NAVIGATION_BAR h2 {
+            color: purple;
+            font-weight: 800;
+            text-align: right;
+            padding: 10px 0;
+            padding-right: 30px;
+            pointer-events: none;
+        }
+
+        .NAVIGATION_BAR #Subjects li {
+            width : 100%;
+            display: inline-flex;
+            margin : 5px 0;
+        }
+      
+        .NAVIGATION_BAR #Subjects li a {
+            width : 100%;
+            display: inline-flex;
+            text-decoration: none;
+            text-transform: capitalize;
+            color: black;
+            padding: 5px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+            display: block;
+            transition: 0.2s ease-out;
+        }
+        
+        .NAVIGATION_BAR #Subjects li:hover a {
+            color: white;
+            background-color:purple;
+        }
+
+        .NAVIGATION_BAR #Subjects li a i{
+            display: inline-block;
+            margin: auto 0;
+            font-size: 16px;
+            width : 20px;
+         
+        }
+
+        .NAVIGATION_BAR #Subjects li a p{
+            transform:scale(1);
+            transform-origin: left;
+            transition: 0.3s;
+            
+        }
+
+        #check:checked ~ .NAVIGATION_BAR #Subjects li a p{
+            transform:scale(0);
+        }
+
+
+        .hide{
+            -webkit-appearance: none;
+            display: none;
+            visibility: hidden;
+        }
+
+        .NAVIGATION_BAR #openarrowclose #arrow{
+            position : absolute;
+            width : 35px;
+            height : 35px;
+            right: -15px;
+            line-height: 35px;
+            font-size: 25px;
+            background: white;
+            box-shadow: 0 0 5px rgba(0,0,0,7);
+            text-align: center;
+            top : 100px;
+            border-radius: 50px;
+            color: #007bff;
+            transition:0.3s;
+        
+        }
+        #check:checked ~ .NAVIGATION_BAR #openarrowclose #arrow{
+            transform: rotate(180deg);
+        }
+        #check:checked ~ .NAVIGATION_BAR {
+            max-width : 60px
+            
+        }
+
