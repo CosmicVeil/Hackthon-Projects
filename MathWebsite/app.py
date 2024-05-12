@@ -1,13 +1,11 @@
 # Import necessary modules from Flask for building web applications and handling HTTP requests and responses.
 from flask import Flask, render_template, request, jsonify
 # Import the OpenAI library for accessing the OpenAI API.
-import openai
+from openai import OpenAI
+client = OpenAI(api_key='GET KEY FROM DISCORD')
 
 
 app = Flask(__name__)# Initialize a Flask application.
-
-openai.api_key = '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'# Set the OpenAI API key to authenticate requests.
-
 
 @app.route('/', methods=['GET', 'POST'])# Define a route for the root URL. It accepts both GET and POST requests.
 def index():    # If a POST request is received (i.e., when the user submits the form):
@@ -20,10 +18,10 @@ def index():    # If a POST request is received (i.e., when the user submits the
 
         num_questions = int(request.form['num_questions'])  # these 3 lines extract the information from the html link <form></form>
 
-        difficulty = request.form['difficulty']
+        difficulty = int(request.form['difficulty_level'])
 
     
-        questions = generate_questions(topic, num_questions)# Generate questions using the generate_questions function.
+        questions = generate_questions(topic, num_questions, difficulty)# Generate questions using the generate_questions function.
 
 
         return render_template('index.html', questions=questions)# Render the index.html template with the generated questions.
@@ -31,16 +29,18 @@ def index():    # If a POST request is received (i.e., when the user submits the
     return render_template('index.html', questions=[])# Render the index.html template with an empty list of questions.
 
 
-def generate_questions(topic, num_questions):# Define a function to generate questions about a given topic using the OpenAI ChatCompletion model.
+def generate_questions(topic, num_questions, difficulty):# Define a function to generate questions about a given topic using the OpenAI ChatCompletion model.
     try:
         
-        response = openai.ChatCompletion.create(
-            model="davinci-002",
-            prompt=f"Generate {num_questions} questions about {topic}.",
-            max_tokens=150
-        )# Send a prompt to the OpenAI API asking to generate a specific number of questions about the given topic.
+        response = client.chat.completions.create(
+  model="gpt-4-turbo",
+  messages=[
+    {"role": "user", "content": f"Create {num_questions} questions about {topic} with grade {difficulty} difficulty. Remove most fluff, and each question should be on a new line. note that we are on python, so special character wont work. "}
+  ])
+        print(difficulty)
+# Send a prompt to the OpenAI API asking to generate a specific number of questions about the given topic.
         
-        text = response['choices'][0]['text'].strip()# Extract and return the generated questions from the API response.
+        text = response.choices[0].message.content# Extract and return the generated questions from the API response.
         return text.split('\n')
     except Exception as e:
 
@@ -51,16 +51,16 @@ def generate_questions(topic, num_questions):# Define a function to generate que
 @app.route('/solve', methods=['POST'])# Define a route for solving questions. It accepts POST requests.
 def solve():# Receive the question from the request data.
     
-    question = request.form['question']
+    data = request.json
+    question = data["question"]
     try:# Send a prompt to the OpenAI API asking to solve the given question.
+        response = client.chat.completions.create(
+            model="gpt-4-turbo",
+            messages=[
+                {"role": "user", "content": f"Create a answer to the question {question}, and show your steps. note that we are on python, so special characters such as \ or () wont work. the solution should be all arithmetic. no extra fluff."}
+            ])
         
-        response = openai.Completion.create(
-            model="davinci-002",
-            prompt=f"Solve the question: {question}",
-            max_tokens=150
-        )
-        
-        solution = response['choices'][0]['text'].strip()# Extract and return the solution from the API response.
+        solution = response.choices[0].message.content# Extract and return the solution from the API response.
         return jsonify({'solution': solution})
     except Exception as e:
 
