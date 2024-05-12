@@ -233,8 +233,28 @@ app = Flask(__name__)# Initialize a Flask application.
 openai.api_key = 'sk-proj-0lxWLZ0arP8k1r7eg54lT3BlbkFJMnuSkYQa2iRR5dGYABXc'# Set the OpenAI API key to authenticate requests.
 
 
-@app.route('/', methods=['GET', 'POST'])# Define a route for the root URL. It accepts both GET and POST requests.
-def index():    # If a POST request is received (i.e., when the user submits the form):
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+
+@app.route('/biology.html')
+def english():
+    return render_template('biology.html')
+
+@app.route('/physics.html')
+def physics():
+    return render_template('physics.html')
+
+
+@app.route('/chemistry.html')
+def chemistry():
+    return render_template('chemistry.html')
+
+
+@app.route('/math.html', methods=['GET', 'POST'])# Define a route for the root URL. It accepts both GET and POST requests.
+def math():    # If a POST request is received (i.e., when the user submits the form):
 
 
     if request.method == 'POST':# Extract the topic and number of questions from the form data.
@@ -249,9 +269,9 @@ def index():    # If a POST request is received (i.e., when the user submits the
         questions = generate_questions(topic, num_questions, difficulty)# Generate questions using the generate_questions function.
 
 
-        return render_template('index.html', questions=questions)# Render the index.html template with the generated questions.
+        return render_template('math.html', questions=questions)# Render the index.html template with the generated questions.
     
-    return render_template('index.html', questions=[])# Render the index.html template with an empty list of questions.
+    return render_template('math.html', questions=[])# Render the index.html template with an empty list of questions.
 
 
 # def generate_questions(topic, num_questions, difficulty):# Define a function to generate questions about a given topic using the OpenAI ChatCompletion model.
