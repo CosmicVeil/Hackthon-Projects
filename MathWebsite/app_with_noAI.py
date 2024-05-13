@@ -298,7 +298,7 @@ def generate_questions(topic,num_questions,difficulty):
     # This keeps all questions given to the user unique
     if topic.lower() == "basic math":
         return basicOperations
-    elif topic.lower() == "quadratics":
+    elif topic.lower() == "factoring":
         questions = []
 
         c_quadratics = quadratics[:]
