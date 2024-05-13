@@ -238,6 +238,9 @@ openai.api_key = 'sk-proj-0lxWLZ0arP8k1r7eg54lT3BlbkFJMnuSkYQa2iRR5dGYABXc'# Set
 def home():
     return render_template('index.html')
 
+@app.route('/index.html')
+def index():
+    return render_template('index.html')
 
 @app.route('/biology.html')
 def english():
@@ -266,7 +269,7 @@ def math():    # If a POST request is received (i.e., when the user submits the 
 
         difficulty = int(request.form['difficulty_level'])
 
-        questions = generate_questions(topic, num_questions, difficulty)# Generate questions using the generate_questions function.
+        questions = generate_math_questions(topic, num_questions, difficulty)# Generate questions using the generate_questions function.
 
 
         return render_template('math.html', questions=questions)# Render the index.html template with the generated questions.
@@ -290,7 +293,7 @@ def math():    # If a POST request is received (i.e., when the user submits the 
 #         return [str(e)]# If an error occurs, return the error message.
 #     print("Dhurv has a unibrow")
 
-def generate_questions(topic,num_questions,difficulty):
+def generate_math_questions(topic,num_questions,difficulty):
 
     # Based on the topic, return a list of questions in that topic
 
