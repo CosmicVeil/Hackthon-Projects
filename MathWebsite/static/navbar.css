@@ -1,104 +1,78 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+.NAVIGATION_BAR {
+position: fixed;
+width: 75px;
+top: 0;
+left: 0;
+height: 100vh;
+z-index: 100;
+background-color: white;
+overflow: hidden;
+transition: width .3s ease;
+cursor: pointer;
+box-shadow: 4px 7px 10px rgba(0, 0, 0, .4);
+}
 
-        .NAVIGATION_BAR {
-            width : 100%;
-            min-height: 100%;
-            max-width:  215px;
-            background: #fff;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            position: absolute;
-            z-index :1;
-            transition: 0.3s ease-in-out;
-            left: 0; 
-            top: 0;
-            
-        }
+/* Adjusting the hover effect */
+.NAVIGATION_BAR:hover {
+width: 200px;
+}
 
-        #PhysicsP,#MathP,#BiologyP,#ChemistryP,#HomeP{
-            font-size: 20px;
-            font-family: 'Poppins', sans-serif;
-        }
+.NAVIGATION_BAR .nav {
+list-style-type: none;
+color: white;
+&:first-child {
+    padding-top: 1.5rem;
+}
+}
 
-        .NAVIGATION_BAR h2 {
-            color: purple;
-            font-weight: 800;
-            text-align: right;
-            padding: 10px 0;
-            padding-right: 30px;
-            pointer-events: none;
-        }
+.nav__items {
+padding-bottom: 4rem;
+font-family: 'roboto';
+}
+.nav__items a {
+    position: relative;
+    display: block;
+    top: -35px;
+    padding-left: 25px;
+    padding-right: 15px;
+    transition: all .3s ease;
+    margin-left: 25px;
+    margin-right: 10px;
+    text-decoration: none;
+    color: black;
+    font-family: 'roboto';
+    font-weight: 100;
+    font-size: 1.35em;
 
-        .NAVIGATION_BAR #Subjects li {
-            width : 100%;
-            display: inline-flex;
-            margin : 5px 0;
-        }
-      
-        .NAVIGATION_BAR #Subjects li a {
-            width : 100%;
-            display: inline-flex;
-            text-decoration: none;
-            text-transform: capitalize;
-            color: black;
-            padding: 5px 8px;
-            border-radius: 10px;
-            font-weight: 500;
-            display: block;
-            transition: 0.2s ease-out;
-        }
-        
-        .NAVIGATION_BAR #Subjects li:hover a {
-            color: white;
-            background-color:purple;
-        }
+    &:after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 2px;
+    background: radial-gradient(circle at 94.02% 88.03%, #54a4ff, transparent 100%);
+    opacity: 0;
+    transition: all .5s ease;
+    z-index: -10;
+    }
+}
 
-        .NAVIGATION_BAR #Subjects li a i{
-            display: inline-block;
-            margin: auto 0;
-            font-size: 16px;
-            width : 20px;
-         
-        }
+.nav__items:hover a:after {
+    opacity: 1;
+}
 
-        .NAVIGATION_BAR #Subjects li a p{
-            transform:scale(1);
-            transform-origin: left;
-            transition: 0.3s;
-            
-        }
-
-        #check:checked ~ .NAVIGATION_BAR #Subjects li a p{
-            transform:scale(0);
-        }
-
-
-        .hide{
-            -webkit-appearance: none;
-            display: none;
-            visibility: hidden;
-        }
-
-        .NAVIGATION_BAR #openarrowclose #arrow{
-            position : absolute;
-            width : 35px;
-            height : 35px;
-            right: -15px;
-            line-height: 35px;
-            font-size: 25px;
-            background: white;
-            box-shadow: 0 0 5px rgba(0,0,0,7);
-            text-align: center;
-            top : 100px;
-            border-radius: 50px;
-            color: #007bff;
-            transition:0.3s;
-        
-        }
-        #check:checked ~ .NAVIGATION_BAR #openarrowclose #arrow{
-            transform: rotate(180deg);
-        }
-        #check:checked ~ .NAVIGATION_BAR {
-            max-width : 60px
-            
-        }
+svg {
+    width: 26px;
+    height: 26px;
+    position: relative;
+    left: -25px;
+    cursor: pointer;
+    @media screen and (min-width: 600px) {
+        width: 32px;
+        height: 32px;
+        left: -15px;
+    }
+}
 
