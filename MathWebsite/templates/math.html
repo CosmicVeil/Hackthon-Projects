@@ -1,127 +1,127 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-body {
-    font-family: Arial, sans-serif;
-    background-image: url('https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm0zNzNiYXRjaDEzLTA4Mi1rcHhrOW5nay5qcGc.jpg'); /* Replace this with the URL of your image */
-    background-size: cover;
-    background-position: center;
-    background-repeat: repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white; 
-}
-#question-selection {
-    background-color: #f0f0f0;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-}
+    <link rel="stylesheet" href="/static/navbar.css">
+    <link rel="stylesheet" href="/static/math.css">
 
-#generate-button {
-    padding: 10px 20px;
-    color: white;
-    background-color: #007bff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-#generate-button:hover {
-    background-color: #0056b3;
-}
+    <title>Math Question Generator</title>
 
-#questions-list {
-    list-style: none;
-    padding: 0;
-}
+</head>
+<body>
+    
+    {% include "navbar.html" %}
 
-#questions-list li button {
-    margin-left: 10px;
-    color: black; /* Change text color to black */
-}
+    <h1>Math Question Generator</h1>
 
-#questions-list li {
-    background-color: #f0f0f0;
-    padding: 20px;
-    margin-bottom: 40px; 
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative; /* Added */
-    color: black; /* Change text color to black */
-}
+    <div id="InputBox" class="InputBox">
+        <form id="question-selection" action="/math.html" method="post">
+            <div>
+                <label id="Topic-label" >Select a Topic:</label>
+                <select name="topic" id="topic" required>
+                    <option value="derivatives">Derivatives</option>
+                    <option value="factoring">Quadratics</option>
+                    <option value="linear systems">Linear Systems</option>
+                </select>
+            </div>
+            <div>
+                <label id="num_questions-label">Number of Questions:</label>
+                <select name="num_questions" id="num_questions" required>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                </select>
+            </div>
+            <div>
+                <label id="difficulty-label" >Difficulty Grade Level:</label>
+                <select name="difficulty_level" id="difficulty_label" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
 
-.solution-button {
-    padding: 10px 20px;
-    color: white;
-    background-color: #007bff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+            </div>
+            <button id="generate-button" type="submit">Generate Questions</button>
+        </form>
+    </div>
 
-.solution-button:hover {
-    background-color: #0056b3;
-}
 
-input[type="text"], select {
-    padding: 8px;
-    margin: 8px 0;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    width: calc(50% - 22px); 
-    color: black; 
-}
+        <div id="QnSbox" class="QnSbox">
+            {% if questions %}
+                <ul id="questions-list"> <!-- Added ID to the UL -->
+                    {% for question in questions %}
+                            <li style="color: black;">{{ question }} <button class="solution-button" data-question="{{ question }}">See Solution</button>
+                                <div class="solution-container">
+                                    <label for="solution-textbox">Solution:</label>
+                                    <textarea class="solution-textbox" readonly style="color: black;"></textarea>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
 
-.solution-container {
-    display: none; /* Hide the solution box by default */
-    position: absolute;
-    right: -380px; /* Adjust the distance from the right */
-    top: 0;
-    width: 300px; /* Adjust the width as needed */
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #007bff;
-    background-color: #f0f0f0;
-    text-align: left;
-    color: black; /* Change text color to black */
-}
 
-.solution-textbox {
-    width: calc(100% - 42px); /* Adjusted width */
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    resize: none;
-    overflow: auto; /* Use auto for scroll bars when needed */
-    text-align: left;
-    height: 60px; /* Set a fixed height or remove for auto-expansion */
-    color: black; /* Change text color to black */
-}
 
-#QnSbox {
-    width: 50%; /* Adjust width as needed */
-    margin-left: auto; /* Align to the left side */
-    margin-right: auto;
-}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const solutionButtons = document.querySelectorAll('.solution-button');
 
-/* Added CSS for horizontal alignment */
-#question-selection div {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
+            solutionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    const solutionContainer = this.parentNode.querySelector('.solution-container');
 
-#question-selection div label {
-    width: 200px; /* Fixed width for labels */
-    margin-right: 20px; /* Adjust as needed */
-    color: black; /* Change text color to black */
-}
+                    // Hide all other solution containers
+                    document.querySelectorAll('.solution-container').forEach(container => {
+                        if (container !== solutionContainer) {
+                            container.style.display = 'none';
+                        }
+                    });
+
+                    // Toggle display of the clicked solution container
+                    if (solutionContainer.style.display === 'block') {
+                        solutionContainer.style.display = 'none';
+                    } else {
+                        getSolution(question, solutionContainer);
+                    }
+                });
+            });
+
+            function getSolution(question, solutionContainer) {
+                fetch('/solve', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({question: question})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const solution = `Solution for "${question}": ${data.solution}`;
+                    solutionContainer.querySelector('.solution-textbox').value = solution; // Set solution to the textbox
+                    solutionContainer.style.display = 'block'; // Display the solution box
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    </script>
+</body>
+</html>
+
+
