@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('https://mukundamandal.com/publications/pub_002/pub_proj_back_01.jpg'); /* Replace this with the URL of your image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white; 
+}
+#question-selection {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+#generate-button {
+    padding: 10px 20px;
+    color: white;
+    background-color: #0c4614;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#generate-button:hover {
+    background-color: #0c4614;
+}
+
+#questions-list {
+    list-style: none;
+    padding: 0;
+}
+
+#questions-list li button {
+    margin-left: 10px;
+    color: black; /* Change text color to black */
+}
+
+#questions-list li {
+    background-color: #f0f0f0;
+    padding: 20px;
+    margin-bottom: 40px; 
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; /* Added */
+    color: black; /* Change text color to black */
+}
+
+.solution-button {
+    padding: 10px 20px;
+    color: white;
+    background-color: #0c4614;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.solution-button:hover {
+    background-color: #0c4614;
+}
+
+input[type="text"], select {
+    padding: 8px;
+    margin: 8px 0;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    width: calc(50% - 22px); 
+    color: black; 
+}
+
+.solution-container {
+    display: none; /* Hide the solution box by default */
+    position: absolute;
+    left: -380px; /* Adjust the distance from the left */
+    top: 0;
+    width: 300px; /* Adjust the width as needed */
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #0c4614;
+    background-color: #f0f0f0;
+    text-align: left;
+    color: black; /* Change text color to black */
+}
+
+.solution-textbox {
+    width: calc(100% - 42px); /* Adjusted width */
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    resize: none;
+    overflow: auto; /* Use auto for scroll bars when needed */
+    text-align: left;
+    height: 60px; /* Set a fixed height or remove for auto-expansion */
+    color: black; /* Change text color to black */
+}
+
+#QnSbox {
+    width: 50%; /* Adjust width as needed */
+    margin-left: auto; /* Align to the left side */
+    margin-right: auto;
+}
+
+/* Added CSS for horizontal alignment */
+#question-selection div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#question-selection div label {
+    width: 200px; /* Fixed width for labels */
+    margin-right: 20px; /* Adjust as needed */
+    color: black; /* Change text color to black */
+}
