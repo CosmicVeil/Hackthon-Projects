@@ -1,78 +1,77 @@
 .NAVIGATION_BAR {
-position: fixed;
-width: 75px;
-top: 0;
-left: 0;
-height: 100vh;
-z-index: 100;
-background-color: white;
-overflow: hidden;
-transition: width .3s ease;
-cursor: pointer;
-box-shadow: 4px 7px 10px rgba(0, 0, 0, .4);
-}
-
-/* Adjusting the hover effect */
-.NAVIGATION_BAR:hover {
-width: 200px;
-}
-
-.NAVIGATION_BAR .nav {
-list-style-type: none;
-color: white;
-&:first-child {
-    padding-top: 1.5rem;
-}
-}
-
-.nav__items {
-padding-bottom: 4rem;
-font-family: 'roboto';
-}
-.nav__items a {
-    position: relative;
-    display: block;
-    top: -35px;
-    padding-left: 25px;
-    padding-right: 15px;
-    transition: all .3s ease;
-    margin-left: 25px;
-    margin-right: 10px;
-    text-decoration: none;
-    color: black;
-    font-family: 'roboto';
-    font-weight: 100;
-    font-size: 1.35em;
-
-    &:after {
-    content: '';
-    width: 100%;
-    height: 100%;
-    position: absolute;
+    position: fixed;
+    width: 75px;
     top: 0;
     left: 0;
-    border-radius: 2px;
+    height: 100vh;
+    z-index: 100;
+    background-color: white;
+    overflow: hidden;
+    transition: width .3s ease;
+    cursor: pointer;
+    box-shadow: 4px 7px 10px rgba(0, 0, 0, .4);
+  }
+  
+  /* Adjusting the hover effect */
+  .NAVIGATION_BAR:hover {
+    width: 200px;
+  }
+  
+  .NAVIGATION_BAR .nav {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .nav__items {
+    font-family: 'roboto';
+    position: relative;
+    margin-bottom: 10px; /* Adding spacing between items */
+  }
+  
+  .nav__items a {
+    display: block;
+    padding: 15px 10px;
+    transition: all .3s ease;
+    text-decoration: none;
+    color: transparent; /* Hiding the text by default */
+    font-weight: 100;
+    font-size: 1.35em;
+  }
+  
+  .nav__items img {
+    width: 100%; /* Making the icons fill the container */
+    height: auto; /* Maintaining aspect ratio */
+    max-width: 48px; /* Limiting the max width */
+    max-height: 48px; /* Limiting the max height */
+    display: block;
+  }
+  
+  /* Adding hover effect for links */
+  .nav__items a:hover {
     background: radial-gradient(circle at 94.02% 88.03%, #54a4ff, transparent 100%);
-    opacity: 0;
-    transition: all .5s ease;
-    z-index: -10;
-    }
-}
-
-.nav__items:hover a:after {
-    opacity: 1;
-}
-
-svg {
+    color: black; /* Changing the text color on hover */
+  }
+  
+  /* Showing the text when the navigation bar is hovered over */
+  .NAVIGATION_BAR:hover .nav__items a {
+    color: black; /* Changing the text color on hover */
+  }
+  
+  /* Adjusting the icon size */
+  svg {
     width: 26px;
     height: 26px;
-    position: relative;
-    left: -25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     cursor: pointer;
-    @media screen and (min-width: 600px) {
-        width: 32px;
-        height: 32px;
-        left: -15px;
+  }
+  
+  @media screen and (min-width: 600px) {
+    svg {
+      width: 32px;
+      height: 32px;
     }
-}
-
+  }
+  
