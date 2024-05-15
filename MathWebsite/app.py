@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, jsonify
 # Import the OpenAI library for accessing the OpenAI API.
 from openai import OpenAI
-client = OpenAI(api_key='GET KEY FROM DISCORD')
+client = OpenAI(api_key='FIND IN DISCORD')
 
 
 app = Flask(__name__)# Initialize a Flask application.
@@ -15,18 +15,44 @@ def home():
 def index():
     return render_template('index.html')
 
-@app.route('/biology.html')
-def english():
-    return render_template('biology.html')
-
-@app.route('/physics.html')
+@app.route('/physics.html', methods=['GET', 'POST'])
 def physics():
-    return render_template('physics.html')
+    if request.method == 'POST':# Extract the topic and number of questions from the form data.
 
 
-@app.route('/chemistry.html')
+        topic = request.form['topic']
+
+        num_questions = int(request.form['num_questions'])  # these 3 lines extract the information from the html link <form></form>
+
+        difficulty = int(request.form['difficulty_level'])
+
+    
+        questions = generate_questions(topic, num_questions, difficulty)# Generate questions using the generate_questions function.
+
+
+        return render_template('physics.html', questions=questions)# Render the index.html template with the generated questions.
+    
+    return render_template('physics.html', questions=[])# Render the index.html template with an empty list of questions.
+
+
+@app.route('/chemistry.html', methods=['GET', 'POST'])
 def chemistry():
-    return render_template('chemistry.html')
+    if request.method == 'POST':# Extract the topic and number of questions from the form data.
+
+
+        topic = request.form['topic']
+
+        num_questions = int(request.form['num_questions'])  # these 3 lines extract the information from the html link <form></form>
+
+        difficulty = int(request.form['difficulty_level'])
+
+    
+        questions = generate_questions(topic, num_questions, difficulty)# Generate questions using the generate_questions function.
+
+
+        return render_template('chemistry.html', questions=questions)# Render the index.html template with the generated questions.
+    
+    return render_template('chemistry.html', questions=[])# Render the index.html template with an empty list of questions.
 
 @app.route('/math.html', methods=['GET', 'POST'])# Define a route for the root URL. It accepts both GET and POST requests.
 def math():    # If a POST request is received (i.e., when the user submits the form):
@@ -50,7 +76,7 @@ def math():    # If a POST request is received (i.e., when the user submits the 
     return render_template('math.html', questions=[])# Render the index.html template with an empty list of questions.
 
 @app.route('/biology.html', methods=['GET', 'POST'])# Define a route for the root URL. It accepts both GET and POST requests.
-def bio():    # If a POST request is received (i.e., when the user submits the form):
+def biology():    # If a POST request is received (i.e., when the user submits the form):
 
 
     if request.method == 'POST':# Extract the topic and number of questions from the form data.
@@ -76,7 +102,7 @@ def generate_questions(topic, num_questions, difficulty):# Define a function to 
         response = client.chat.completions.create(
   model="gpt-4-turbo",
   messages=[
-    {"role": "user", "content": f"Create {num_questions} questions about {topic} with grade {difficulty} difficulty. Remove most fluff, and each question should be on a new line. note that we are on python, so special character wont work. "}
+    {"role": "user", "content": f"Create {num_questions} questions about {topic} with grade {difficulty} difficulty. Remove most fluff, and each question should be on a new line. Please don't use any special formatting or symbols."}
   ])
         print(difficulty)
 # Send a prompt to the OpenAI API asking to generate a specific number of questions about the given topic.
@@ -98,7 +124,7 @@ def solve():# Receive the question from the request data.
         response = client.chat.completions.create(
             model="gpt-4-turbo",
             messages=[
-                {"role": "user", "content": f"Create a answer to the question {question}, and show your steps. note that we are on python, so special characters such as \\ or () wont work."}
+                {"role": "user", "content": f"Create a answer to the question {question}. Make the answer one sentence or 2 if its not a math question. Please don't use any special formatting or symbols for all types of questions."}
             ])
         
         solution = response.choices[0].message.content# Extract and return the solution from the API response.
