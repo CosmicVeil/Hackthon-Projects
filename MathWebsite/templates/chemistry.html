@@ -3,11 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="/static/navbar.css">
+    <link rel="stylesheet" href="/static/chemistry.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Document</title>
+
+    <title>Chemistry Question Generator</title>
+
 </head>
 <body>
+    
     {% include "navbar.html" %}
+
+    <h1>Chemistry Question Generator</h1>
+
+    <div id="InputBox" class="InputBox">
+        <form id="question-selection" action="/chemistry.html" method="post">
+            <div>
+                <label id="Topic-label" >Select a Topic:</label>
+                <select name="topic" id="topic" required>
+                    <option value="elements">Elements</option>
+                    <option value="chemical reactions">Chemical Reactions</option>
+                    <option value="thermodynamics">Thermodynamics</option>
+                </select>
+            </div>
+            <div>
+                <label id="num_questions-label">Number of Questions:</label>
+                <select name="num_questions" id="num_questions" required>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                </select>
+            </div>
+            <div>
+                <label id="difficulty-label" >Difficulty Grade Level:</label>
+                <select name="difficulty_level" id="difficulty_label" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+
+            </div>
+            <button id="generate-button" type="submit">Generate Questions</button>
+        </form>
+    </div>
+
+
+        <div id="QnSbox" class="QnSbox">
+            {% if questions %}
+                <ul id="questions-list"> <!-- Added ID to the UL -->
+                    {% for question in questions %}
+                            <li style="color: black;">{{ question }} <button class="solution-button" data-question="{{ question }}">See Solution</button>
+                                <div class="solution-container">
+                                    <label for="solution-textbox">Solution:</label>
+                                    <textarea class="solution-textbox" readonly style="color: black;"></textarea>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const solutionButtons = document.querySelectorAll('.solution-button');
+
+            solutionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    const solutionContainer = this.parentNode.querySelector('.solution-container');
+
+                    // Hide all other solution containers
+                    document.querySelectorAll('.solution-container').forEach(container => {
+                        if (container !== solutionContainer) {
+                            container.style.display = 'none';
+                        }
+                    });
+
+                    // Toggle display of the clicked solution container
+                    if (solutionContainer.style.display === 'block') {
+                        solutionContainer.style.display = 'none';
+                    } else {
+                        getSolution(question, solutionContainer);
+                    }
+                });
+            });
+
+            function getSolution(question, solutionContainer) {
+                fetch('/solve', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({question: question})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const solution = `Solution for "${question}": ${data.solution}`;
+                    solutionContainer.querySelector('.solution-textbox').value = solution; // Set solution to the textbox
+                    solutionContainer.style.display = 'block'; // Display the solution box
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    </script>
 </body>
 </html>
+
