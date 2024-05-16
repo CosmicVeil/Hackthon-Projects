@@ -1,0 +1,157 @@
+
+.title{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background-color: rgb(32, 123, 228);
+}
+
+.title header {
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+
+}
+.title nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.title nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.title nav ul li a:hover {
+    text-decoration: underline;
+}
+
+.title header h1 {
+    margin: 0;
+}
+.title nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.about-section p {
+    margin-bottom: 10px;
+}
+
+.opening-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 50px;
+    margin: 0;
+    max-width: 1500px; /* Adjust as needed */
+    margin: 20px auto; /* Center horizontally and add margin top and bottom */
+    padding: 20px; /* Add padding around the content */
+    border: 1px solid #ccc; /* Add border */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
+}
+
+
+.opening-section .image-container {
+    flex: 1;
+    position: relative;
+}
+.opening-section .image-container img {
+    width: 100%;
+    height: auto;
+}
+
+.opening-section .opening-text-container {
+    position: absolute;
+    top: 50%;
+    left: 20%; /* Adjust the left position */
+    transform: translate(-50%, -50%);
+    max-width: 30%; /* Adjust as needed */
+    padding: 20px;
+    flex: 1;
+    padding: 0 20px;
+}
+
+
+
+.opening-section .opening-text-container  h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: white;
+}
+.opening-section .opening-text-container p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: white;
+    
+}
+.opening-section .opening-text-container a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+
+.information-box{
+    margin: 0;
+    padding: 0;
+    max-width: 1500px; /* Adjust as needed */
+    margin: 20px auto; /* Center horizontally and add margin top and bottom */
+    padding: 20px; /* Add padding around the content */
+    border: 1px solid #ccc; /* Add border */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
+}
+.information-box #abouttext{
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    text-align: center; 
+    line-height: 2 ;
+}
+
+.information-box .math-question-info,
+.physics-question-info,
+.biology-question-info,
+.chemistry-question-info {
+    flex: 1;
+    max-width: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin: 10px;
+    text-align: center;
+    font-size: 16px;
+    max-width: 300px; /* Adjust as needed */
+    max-height: 500px;
+    margin: 20px auto; /* Center horizontally and add margin top and bottom */
+    padding: 20px; /* Add padding around the content */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
+    line-height: 2 ;
+
+}
+
+.information-box .math-question-info h1,
+.physics-question-info h1,
+.biology-question-info h1,
+.chemistry-question-info h1 {
+    margin-top: 0;
+}
+
+
+.information-box .question-information-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+footer {
+    background-color: rgb(32, 123, 228);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
