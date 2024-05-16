@@ -84,7 +84,7 @@ input[type="text"], select {
 .solution-container {
     display: none; /* Hide the solution box by default */
     position: absolute;
-    left: -380px; /* Adjust the distance from the left */
+    right: -380px; /* Adjust the distance from the right */
     top: 0;
     width: 300px; /* Adjust the width as needed */
     padding: 20px;
