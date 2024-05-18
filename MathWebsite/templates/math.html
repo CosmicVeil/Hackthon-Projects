@@ -113,7 +113,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    const solution = `Solution for "${question}": ${data.solution}`;
+                    const solution = `${data.solution}`;
                     solutionContainer.querySelector('.solution-textbox').value = solution; // Set solution to the textbox
                     solutionContainer.style.display = 'block'; // Display the solution box
                 })
