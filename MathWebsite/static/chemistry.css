@@ -70,6 +70,7 @@ body {
 
 .solution-button:hover {
     background-color: #0c4614;
+    color: white
 }
 
 input[type="text"], select {
@@ -84,7 +85,7 @@ input[type="text"], select {
 .solution-container {
     display: none; /* Hide the solution box by default */
     position: absolute;
-    right: -380px; /* Adjust the distance from the left */
+    left: -380px; /* Adjust the distance from the left */
     top: 0;
     width: 300px; /* Adjust the width as needed */
     padding: 20px;
