@@ -43,7 +43,7 @@ body {
 
 #questions-list li button {
     margin-left: 10px;
-    color: black; /* Change text color to black */
+    color: white; /* Change text color to black */
 }
 
 #questions-list li {
