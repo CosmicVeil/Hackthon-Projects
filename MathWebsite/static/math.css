@@ -93,6 +93,15 @@ input[type="text"], select {
     color: black; /* Ensures text inside inputs and selects is black */
 }
 
+input[list="topics"] {
+    padding: 8px;
+    margin: 8px 0;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    width: 100%; /* Adjust the width as needed */
+    color: black;
+}
+
 .modal {
     display: none;
     position: fixed;
