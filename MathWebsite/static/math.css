@@ -2,25 +2,36 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-image: url('https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm0zNzNiYXRjaDEzLTA4Mi1rcHhrOW5nay5qcGc.jpg'); /* Replace this with the URL of your image */
+    background-image: url('https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm0zNzNiYXRjaDEzLTA4Mi1rcHhrOW5nay5qcGc.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: repeat;
     background-attachment: fixed;
-    background-size: cover;
     margin: 0;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: white; 
+    color: black; /* Default text color */
 }
+
+h1 {
+    color: white; /* Heading text color */
+    font-family: 'Poppins', sans-serif; /* Consistent font family */
+    margin-bottom: 30px; /* Space below the heading */
+    text-align: center; /* Center align the heading */
+}
+
 #question-selection {
     background-color: #f0f0f0;
-    padding: 20px;
+    padding: 30px; /* Increased padding for a larger appearance */
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
+    margin-bottom: 30px; /* Increased margin below the form */
+    width: 100%; /* Ensure full width */
+    max-width: 800px; /* Increase maximum width for prominence */
+    box-sizing: border-box; /* Include padding and border in the total width and height */
+    text-align: center; /* Center align text inside the form */
 }
 
 #generate-button {
@@ -30,33 +41,32 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 20px; /* Space above the button */
 }
 
 #generate-button:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
 }
 
 #questions-list {
     list-style: none;
     padding: 0;
-}
-
-#questions-list li button {
-    margin-left: 10px;
-    color: black; /* Change text color to black */
+    width: 100%; /* Ensure full width */
+    max-width: 800px; /* Match the size of the form box */
 }
 
 #questions-list li {
     background-color: #f0f0f0;
     padding: 20px;
-    margin-bottom: 40px; 
+    margin-bottom: 40px;
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative; /* Added */
-    color: black; /* Change text color to black */
+    color: black; /* Ensures text inside the list item is black */
 }
 
 .solution-button {
@@ -66,10 +76,12 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .solution-button:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
 }
 
 input[type="text"], select {
@@ -78,42 +90,71 @@ input[type="text"], select {
     border-radius: 4px;
     border: 1px solid #ddd;
     width: calc(50% - 22px); 
-    color: black; 
+    color: black; /* Ensures text inside inputs and selects is black */
 }
 
-.solution-container {
-    display: none; /* Hide the solution box by default */
-    position: absolute;
-    left: -380px; /* Adjust the distance from the left */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
     top: 0;
-    width: 300px; /* Adjust the width as needed */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
     padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #007bff;
-    background-color: #f0f0f0;
-    text-align: left;
-    color: black; /* Change text color to black */
+    border: 2px solid #007bff; /* Blue border */
+    width: 80%;
+    max-width: 800px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    color: black; /* Ensures text inside the modal is black */
+}
+
+.modal-header {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: black; /* Ensures header inside modal is black */
+}
+
+.close {
+    color: #007bff; /* Blue close button */
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #0056b3;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .solution-textbox {
-    width: calc(100% - 42px); /* Adjusted width */
+    width: calc(100% - 22px);
     padding: 10px;
-    border-radius: 4px;
+    border-radius: 6px;
     border: 1px solid #ddd;
     resize: none;
-    overflow: auto; /* Use auto for scroll bars when needed */
-    text-align: left;
-    height: 60px; /* Set a fixed height or remove for auto-expansion */
-    color: black; /* Change text color to black */
+    overflow: auto;
+    height: 60px;
+    color: black; /* Ensures text inside the solution textbox is black */
+    margin-top: 20px; /* Space between question text and solution */
 }
 
 #QnSbox {
     width: 50%; /* Adjust width as needed */
-    margin-left: auto; /* Align to the left side */
+    margin-left: auto;
     margin-right: auto;
 }
 
-/* Added CSS for horizontal alignment */
 #question-selection div {
     display: flex;
     align-items: center;
