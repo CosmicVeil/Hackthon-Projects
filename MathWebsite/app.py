@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, jsonify
 # Import the OpenAI library for accessing the OpenAI API.
 from openai import OpenAI
-client = OpenAI(api_key='FIND IN DISCORD')
+client = OpenAI(api_key='FOUND IN DISCORD')
 
 
 app = Flask(__name__)# Initialize a Flask application.
@@ -27,7 +27,7 @@ def physics():
         difficulty = int(request.form['difficulty_level'])
 
     
-        questions = generate_questions(topic, num_questions, difficulty)# Generate questions using the generate_questions function.
+        questions = generate_questions("physics", topic, num_questions, difficulty)# Generate questions using the generate_questions function.
 
 
         return render_template('physics.html', questions=questions)# Render the index.html template with the generated questions.
@@ -47,7 +47,7 @@ def chemistry():
         difficulty = int(request.form['difficulty_level'])
 
     
-        questions = generate_questions(topic, num_questions, difficulty)# Generate questions using the generate_questions function.
+        questions = generate_questions("chemistry", topic, num_questions, difficulty)# Generate questions using the generate_questions function.
 
 
         return render_template('chemistry.html', questions=questions)# Render the index.html template with the generated questions.
@@ -68,7 +68,7 @@ def math():    # If a POST request is received (i.e., when the user submits the 
         difficulty = int(request.form['difficulty_level'])
 
     
-        questions = generate_questions(topic, num_questions, difficulty)# Generate questions using the generate_questions function.
+        questions = generate_questions("math", topic, num_questions, difficulty)# Generate questions using the generate_questions function.
 
 
         return render_template('math.html', questions=questions)# Render the index.html template with the generated questions.
@@ -89,20 +89,20 @@ def biology():    # If a POST request is received (i.e., when the user submits t
         difficulty = int(request.form['difficulty_level'])
 
     
-        questions = generate_questions(topic, num_questions, difficulty)# Generate questions using the generate_questions function.
+        questions = generate_questions("biology", topic, num_questions, difficulty)# Generate questions using the generate_questions function.
 
 
         return render_template('biology.html', questions=questions)# Render the index.html template with the generated questions.
     
     return render_template('biology.html', questions=[])# Render the index.html template with an empty list of questions.
 
-def generate_questions(topic, num_questions, difficulty):# Define a function to generate questions about a given topic using the OpenAI ChatCompletion model.
+def generate_questions(subject, topic, num_questions, difficulty):# Define a function to generate questions about a given topic using the OpenAI ChatCompletion model.
     try:
         
         response = client.chat.completions.create(
   model="gpt-4-turbo",
   messages=[
-    {"role": "user", "content": f"Create {num_questions} questions about {topic} with grade {difficulty} difficulty. Remove most fluff, and each question should be on a new line. Please don't use any special formatting or symbols."}
+    {"role": "user", "content": f"Create {num_questions} questions about {topic} with grade {difficulty} difficulty. The topic is part of {subject}. Remove most fluff, and each question should be on a new line. There should be no empty lines. Please don't use any special formatting or symbols."}
   ])
         print(difficulty)
 # Send a prompt to the OpenAI API asking to generate a specific number of questions about the given topic.
@@ -124,7 +124,7 @@ def solve():# Receive the question from the request data.
         response = client.chat.completions.create(
             model="gpt-4-turbo",
             messages=[
-                {"role": "user", "content": f"Create a answer to the question {question}. Make the answer one sentence or 2 if its not a math question. Please don't use any special formatting or symbols for all types of questions."}
+                {"role": "user", "content": f"Create a answer to the question {question}. Make the answer one sentence or 2(in simple terminology) if its not a math question. If it is a math question, create a 1-5 step response to the question. Please don't use any special formatting or symbols for all types of questions."}
             ])
         
         solution = response.choices[0].message.content# Extract and return the solution from the API response.
