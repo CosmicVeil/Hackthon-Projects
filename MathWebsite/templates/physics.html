@@ -20,12 +20,13 @@
     <div id="InputBox" class="InputBox">
         <form id="question-selection" action="/physics.html" method="post">
             <div>
-                <label id="Topic-label">Select a Topic:</label>
-                <select name="topic" id="topic" required>
-                    <option value="kinematics">Kinematics</option>
-                    <option value="optics & lenses">Optics & Lenses</option>
-                    <option value="work and Energy">Work and Energy</option>
-                </select>
+                <label id="Topic-label">Enter a Topic:</label>
+                <input list="topics" name="topic" id="topic" required placeholder="Enter/Select a Topic: ">
+                <datalist id="topics">
+                    <option value="Kinematics">
+                    <option value="Work">
+                    <option value="Forces">
+                </datalist>
             </div>
             <div>
                 <label id="num_questions-label">Number of Questions:</label>

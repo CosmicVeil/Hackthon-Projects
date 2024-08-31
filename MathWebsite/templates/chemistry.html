@@ -20,12 +20,13 @@
     <div id="InputBox" class="InputBox">
         <form id="question-selection" action="/chemistry.html" method="post">
             <div>
-                <label id="Topic-label">Select a Topic:</label>
-                <select name="topic" id="topic" required>
-                    <option value="elements">Elements</option>
-                    <option value="chemical reactions">Chemical Reactions</option>
-                    <option value="thermodynamics">Thermodynamics</option>
-                </select>
+                <label id="Topic-label">Enter a Topic:</label>
+                <input list="topics" name="topic" id="topic" required placeholder="Enter/Select a Topic: ">
+                <datalist id="topics">
+                    <option value="Acids and Bases">
+                    <option value="Chemical Bonding">
+                    <option value="Periodic Table">
+                </datalist>
             </div>
             <div>
                 <label id="num_questions-label">Number of Questions:</label>
