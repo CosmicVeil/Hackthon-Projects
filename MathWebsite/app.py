@@ -102,7 +102,7 @@ def generate_questions(subject, topic, num_questions, difficulty):# Define a fun
         response = client.chat.completions.create(
   model="gpt-4-turbo",
   messages=[
-    {"role": "user", "content": f"Create {num_questions} questions about {topic} with grade {difficulty} difficulty. The topic is part of {subject}. Remove most fluff, and each question should be on a new line. There should be no empty lines. Please don't use any special formatting or symbols."}
+    {"role": "user", "content": f"Create {num_questions} questions about {topic} with grade {difficulty} difficulty. If the topic is not a part of {subject}, return Please enter a valid topic, which relates to {subject}. Remove most fluff, and each question should be on a new line. There should be no empty lines. Please don't use any special formatting or symbols."}
   ])
         print(difficulty)
 # Send a prompt to the OpenAI API asking to generate a specific number of questions about the given topic.
