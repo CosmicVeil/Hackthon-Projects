@@ -175,3 +175,30 @@ input[list="topics"] {
     margin-right: 20px; /* Adjust as needed */
     color: black; /* Change text color to black */
 }
+
+/* Styles for Feedback Modal */
+#feedbackModal {
+    display: none;
+}
+
+.feedback-modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 2px solid #007bff;
+    border-radius: 12px;
+    color: black; /* Ensures text inside the feedback modal is black */
+}
+
+.close-feedback {
+    color: #007bff; /* Blue close button for feedback */
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-feedback:hover,
+.close-feedback:focus {
+    color: #0056b3;
+    text-decoration: none;
+    cursor: pointer;
+}
