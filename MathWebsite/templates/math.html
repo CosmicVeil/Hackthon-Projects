@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="/static/navbar.css">
     <link rel="stylesheet" href="/static/math.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <title>Math Question Generator</title>
 </head>
 <body>
-    
     {% include "navbar.html" %}
 
     <h1>Math Question Generator</h1>
@@ -66,13 +62,19 @@
                     <li>
                         {{ question }}
                         <button class="solution-button" data-question="{{ question }}" data-index="{{ loop.index }}">See Solution</button>
+
+                        <!-- New Input field and button -->
+                        <form class="answer-form">
+                            <input type="text" name="answer" placeholder="Enter your answer here" class="answer-input">
+                            <button type="button" class="check-answer-button" data-question="{{ question }}">Check Answer</button>
+                        </form>
                     </li>
                 {% endfor %}
             </ul>
         {% endif %}
     </div>
 
-    <!-- Modal Structure -->
+    <!-- Modal Structure for Solution -->
     <div id="solutionBoxModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -84,46 +86,98 @@
         </div>
     </div>
 
+    <!-- Modal Structure for Answer Feedback -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <span class="close-feedback">&times;</span>
+            <div class="modal-header">
+                <span id="feedback-text"></span>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const solutionButtons = document.querySelectorAll('.solution-button');
-            const modal = document.getElementById('solutionBoxModal');
+            const checkAnswerButtons = document.querySelectorAll('.check-answer-button');
+            const solutionModal = document.getElementById('solutionBoxModal');
+            const feedbackModal = document.getElementById('feedbackModal');
             const modalHeader = document.getElementById('modal-question-text');
-            const closeBtn = document.querySelector('.close');
+            const closeSolutionBtn = document.querySelector('.close');
+            const closeFeedbackBtn = document.querySelector('.close-feedback');
+            const feedbackText = document.getElementById('feedback-text');
             const solutionTextbox = document.querySelector('.solution-textbox');
 
+            // Solution button click
             solutionButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const question = this.getAttribute('data-question');
                     const index = this.getAttribute('data-index');
-                    modalHeader.textContent = `Question ${index}: ${question}`; // Display question and number
+                    modalHeader.textContent = `Question ${index}: ${question}`;
                     getSolution(question);
                 });
             });
 
+            // Check answer button click
+            checkAnswerButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    const answerInput = this.previousElementSibling;
+                    const answer = answerInput.value;
+                    checkAnswer(question, answer);
+                });
+            });
+
+            // Fetch solution
             function getSolution(question) {
                 fetch('/solve', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({question: question})
+                    body: JSON.stringify({ question: question })
                 })
                 .then(response => response.json())
                 .then(data => {
                     solutionTextbox.value = data.solution;
-                    modal.style.display = 'block';
+                    solutionModal.style.display = 'block';
                 })
                 .catch(error => console.error('Error:', error));
             }
 
-            closeBtn.onclick = function() {
-                modal.style.display = 'none';
+            // Check answer
+            function checkAnswer(question, answer) {
+                fetch('/answer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question: question, answer: answer })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    feedbackText.textContent = data.answer; // Show feedback
+                    feedbackModal.style.display = 'block'; // Show feedback modal
+                })
+                .catch(error => console.error('Error:', error));
             }
 
+            // Close solution modal
+            closeSolutionBtn.onclick = function() {
+                solutionModal.style.display = 'none';
+            }
+
+            // Close feedback modal
+            closeFeedbackBtn.onclick = function() {
+                feedbackModal.style.display = 'none';
+            }
+
+            // Close modals when clicking outside
             window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
+                if (event.target == solutionModal) {
+                    solutionModal.style.display = 'none';
+                } else if (event.target == feedbackModal) {
+                    feedbackModal.style.display = 'none';
                 }
             }
         });
