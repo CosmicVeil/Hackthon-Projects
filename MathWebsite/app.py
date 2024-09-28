@@ -2,7 +2,10 @@
 from flask import Flask, render_template, request, jsonify
 # Import the OpenAI library for accessing the OpenAI API.
 from openai import OpenAI
-client = OpenAI(api_key='FOUND IN DISCORD')
+client = OpenAI(api_key='IN DISCORD')
+
+solved = 0.0
+attempted = 0.0
 
 
 app = Flask(__name__)# Initialize a Flask application.
@@ -102,7 +105,7 @@ def generate_questions(subject, topic, num_questions, difficulty):# Define a fun
         response = client.chat.completions.create(
   model="gpt-4-turbo",
   messages=[
-    {"role": "user", "content": f"Create {num_questions} questions about {topic} with grade {difficulty} difficulty. If {topic} is not a part of {subject}, return Please enter a valid topic, which relates to {subject}. However, if the topic is even semi-related, then continue normally. Remove most fluff, and each question should be on a new line. There should be no empty lines. Please don't use any special formatting or symbols."}
+    {"role": "user", "content": f"Create {num_questions} questions about {topic} with grade {difficulty} difficulty. Make it a contest question(uses thinking) not just using formulas. If {topic} is not a part of {subject}, return Please enter a valid topic, which relates to {subject}. However, if the topic is even semi-related, then continue normally. Remove most fluff, and each question should be on a new line. There should be no empty lines. Please don't use any special formatting or symbols."}
   ])
         print(difficulty)
 # Send a prompt to the OpenAI API asking to generate a specific number of questions about the given topic.
@@ -133,6 +136,28 @@ def solve():# Receive the question from the request data.
 
         return jsonify({'error': str(e)})# If an error occurs, return the error message.
 
+@app.route('/answer', methods=['POST'])
+def checkAnswer():
+
+    data = request.json
+    question = data["question"]
+    answer = data["answer"]
+
+    response = client.chat.completions.create(
+        model="gpt-4-turbo",
+        messages=[
+            {"role": "user", "content": f"Is {answer} the correct answer to {question}? Return a one word answer, either Correct or Incorrect."}
+        ]
+    )
+
+    answer = response.choices[0].message.content
+
+    # if answer == "Correct":
+    #     solved += 1
+    
+    # attempted += 1
+
+    return jsonify({"answer": answer})
 
 if __name__ == '__main__': # Main execution: Start the Flask application in debug mode if the script is run directly.
     app.run(debug=True)
