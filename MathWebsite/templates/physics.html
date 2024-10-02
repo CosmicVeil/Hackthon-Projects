@@ -3,18 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="/static/navbar.css">
     <link rel="stylesheet" href="/static/physics.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <title>Physics Question Generator</title>
 </head>
 <body>
-    
     {% include "navbar.html" %}
-
     <h1>Physics Question Generator</h1>
 
     <div id="InputBox" class="InputBox">
@@ -66,6 +61,10 @@
                     <li>
                         {{ question }}
                         <button class="solution-button" data-question="{{ question }}" data-index="{{ loop.index }}">See Solution</button>
+                        <form class="answer-form">
+                            <input type="text" name="answer" placeholder="Enter your answer here" class="answer-input">
+                            <button type="button" class="check-answer-button" data-question="{{ question }}">Check Answer</button>
+                        </form>
                     </li>
                 {% endfor %}
             </ul>
@@ -87,6 +86,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const solutionButtons = document.querySelectorAll('.solution-button');
+            const checkAnswerButtons = document.querySelectorAll('.check-answer-button');
             const modal = document.getElementById('solutionBoxModal');
             const modalHeader = document.getElementById('modal-question-text');
             const closeBtn = document.querySelector('.close');
@@ -98,6 +98,15 @@
                     const index = this.getAttribute('data-index');
                     modalHeader.textContent = `Question ${index}: ${question}`;
                     getSolution(question);
+                });
+            });
+
+            checkAnswerButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    const answerInput = this.previousElementSibling;
+                    const answer = answerInput.value;
+                    checkAnswer(question, answer);
                 });
             });
 
@@ -113,6 +122,21 @@
                 .then(data => {
                     solutionTextbox.value = data.solution;
                     modal.style.display = 'block';
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            function checkAnswer(question, answer) {
+                fetch('/check_answer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({question: question, answer: answer})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.feedback); // Show feedback from the server
                 })
                 .catch(error => console.error('Error:', error));
             }
