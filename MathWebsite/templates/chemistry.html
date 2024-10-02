@@ -66,13 +66,19 @@
                     <li>
                         {{ question }}
                         <button class="solution-button" data-question="{{ question }}" data-index="{{ loop.index }}">See Solution</button>
+                        
+                        <!-- New Input field and button for checking answers -->
+                        <form class="answer-form">
+                            <input type="text" name="answer" placeholder="Enter your answer here" class="answer-input">
+                            <button type="button" class="check-answer-button" data-question="{{ question }}">Check Answer</button>
+                        </form>
                     </li>
                 {% endfor %}
             </ul>
         {% endif %}
     </div>
 
-    <!-- Modal Structure -->
+    <!-- Modal Structure for Solution -->
     <div id="solutionBoxModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -84,12 +90,25 @@
         </div>
     </div>
 
+    <!-- Modal Structure for Answer Feedback -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <span class="close-feedback">&times;</span>
+            <div class="modal-header">
+                <span id="feedback-text"></span>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const solutionButtons = document.querySelectorAll('.solution-button');
-            const modal = document.getElementById('solutionBoxModal');
+            const checkAnswerButtons = document.querySelectorAll('.check-answer-button');
+            const solutionModal = document.getElementById('solutionBoxModal');
+            const feedbackModal = document.getElementById('feedbackModal');
             const modalHeader = document.getElementById('modal-question-text');
-            const closeBtn = document.querySelector('.close');
+            const closeSolutionBtn = document.querySelector('.close');
+            const closeFeedbackBtn = document.querySelector('.close-feedback');
             const solutionTextbox = document.querySelector('.solution-textbox');
 
             solutionButtons.forEach(button => {
@@ -101,29 +120,60 @@
                 });
             });
 
+            checkAnswerButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const answerInput = this.previousElementSibling;
+                    const userAnswer = answerInput.value;
+                    const question = this.getAttribute('data-question');
+                    checkAnswer(question, userAnswer);
+                });
+            });
+
             function getSolution(question) {
                 fetch('/solve', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({question: question})
+                    body: JSON.stringify({ question: question })
                 })
                 .then(response => response.json())
                 .then(data => {
                     solutionTextbox.value = data.solution;
-                    modal.style.display = 'block';
+                    solutionModal.style.display = 'block';
                 })
                 .catch(error => console.error('Error:', error));
             }
 
-            closeBtn.onclick = function() {
-                modal.style.display = 'none';
+            function checkAnswer(question, userAnswer) {
+                fetch('/check_answer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question: question, answer: userAnswer })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('feedback-text').textContent = data.feedback;
+                    feedbackModal.style.display = 'block';
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            closeSolutionBtn.onclick = function() {
+                solutionModal.style.display = 'none';
+            }
+
+            closeFeedbackBtn.onclick = function() {
+                feedbackModal.style.display = 'none';
             }
 
             window.onclick = function(event) {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
+                if (event.target === solutionModal) {
+                    solutionModal.style.display = 'none';
+                } else if (event.target === feedbackModal) {
+                    feedbackModal.style.display = 'none';
                 }
             }
         });
