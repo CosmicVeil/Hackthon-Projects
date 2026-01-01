@@ -8,7 +8,7 @@ solved = 0.0
 attempted = 0.0
 
 
-app = Flask(__name__)# Initialize a Flask application.
+app = Flask(__name__, template_folder='templates', static_folder='static')# Initialize a Flask application.
 
 @app.route('/')
 def home():
