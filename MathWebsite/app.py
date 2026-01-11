@@ -2,7 +2,8 @@
 from flask import Flask, render_template, request, jsonify
 # Import the OpenAI library for accessing the OpenAI API.
 from openai import OpenAI
-client = OpenAI(api_key='IN DISCORD')
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 solved = 0.0
 attempted = 0.0
