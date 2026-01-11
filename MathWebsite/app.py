@@ -152,7 +152,7 @@ def checkAnswer():
     response = client.chat.completions.create(
         model="gpt-4-turbo",
         messages=[
-            {"role": "user", "content": f"Is {answer} the correct answer to {question}? Return a one word answer, either Correct or Incorrect."}
+            {"role": "user", "content": f"Is {answer} the correct answer to {question}? Return a one word answer, either Correct or Incorrect. Make sure that their answer doesnt have to be EXACTLY the same as yours, ex. 2 is fine for an answer of 2 units etc."}
         ]
     )
 
