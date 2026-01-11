@@ -2,7 +2,11 @@
 from flask import Flask, render_template, request, jsonify
 # Import the OpenAI library for accessing the OpenAI API.
 from openai import OpenAI
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise ValueError("OPENAI_API_KEY environment variable is missing or empty. Check dashboard.")
+
+client = OpenAI(api_key=api_key)
 
 
 solved = 0.0
