@@ -1,14 +1,20 @@
 # Import necessary modules from Flask for building web applications and handling HTTP requests and responses.
 from flask import Flask, render_template, request, jsonify
+import os
 # Import the OpenAI library for accessing the OpenAI API.
 from openai import OpenAI
-client = OpenAI(api_key='IN DISCORD')
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise ValueError("OPENAI_API_KEY environment variable is missing or empty. Check dashboard.")
+
+client = OpenAI(api_key=api_key)
+
 
 solved = 0.0
 attempted = 0.0
 
 
-app = Flask(__name__)# Initialize a Flask application.
+app = Flask(__name__, template_folder='templates', static_folder='static')# Initialize a Flask application.
 
 @app.route('/')
 def home():
