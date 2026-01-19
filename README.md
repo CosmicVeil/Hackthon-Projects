@@ -1,5 +1,7 @@
 MS Question Generator Generate smart and dynamic questions for various topics with ease!
 
+https://ms-generation-1.onrender.com/
+
 📌 Overview MS Question Generator is a powerful tool designed to generate insightful questions based on different subjects. Whether you're studying, preparing for interviews, or creating quizzes, this tool helps generate relevant questions effortlessly.
 
 🚀 Features 🧠 AI-Powered Question Generation – Generates questions based on input topics.
